@@ -55,7 +55,7 @@ class ArticlesController extends BaseController {
   async destroy() {
     await this.baseDestroy('Articles');
   }
-
+  // 添加评论
   async addComment() {
     const { ctx } = this;
     const id = ctx.params.id;
@@ -63,6 +63,17 @@ class ArticlesController extends BaseController {
     comment.user = this.user;
     try {
       await ctx.model.Articles.findByIdAndUpdate(id, { $push: { comments: comment } });
+      this.success();
+    } catch (error) {
+      this.error({ error });
+    }
+  }
+  // 删除评论
+  async removeComment() {
+    const { ctx } = this;
+    const { article_id, comment_id } = ctx.params;
+    try {
+      await ctx.model.Articles.findByIdAndUpdate(article_id, { $pull: { _id: comment_id } });
       this.success();
     } catch (error) {
       this.error({ error });

@@ -22,8 +22,10 @@ class BaseController extends Controller {
   async baseDestroy(model) {
     const { ctx } = this;
     const id = ctx.params.id;
+    const { ids = [] } = ctx.request.body;
+    ids.push(id);
     try {
-      await ctx.model[model].findByIdAndRemove(id);
+      await ctx.model[model].remove({ _id: { $in: ids } });
       this.success();
     } catch (error) {
       this.error({ error });

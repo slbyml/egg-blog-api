@@ -18,5 +18,7 @@ module.exports = app => {
   router.resources('articles', '/api/articles', controller.articles);
   // 文章评论
   router.post('articles', '/api/articles/comment/:id', controller.articles.addComment);
+  // 删除文章评论
+  router.delete('articles', '/api/articles/:article_id/comment/:commoent_id', controller.articles.removeComment);
 
 };
